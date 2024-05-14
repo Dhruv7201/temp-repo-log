@@ -1,10 +1,9 @@
 import RPi.GPIO as GPIO
 import time
 
+from datetime import datetime
 import logging
-
-logging.basicConfig(filename=f'/var/prod/log/MCode_171Vpoint_20{datetime.now().strftime("%Y-%m-%d")}_log.txt', level=logging.DEBUG, format='%(asctime)s - %(message)s')
-
+logging.basicConfig(filename=f'/var/prod/log/Mcode_171VPoint_32{datetime.now().strftime("%Y-%m-%d")}_log.txt', level=logging.DEBUG, format='%(asctime)s - %(message)s')
 
 import json
 import evdev
@@ -32,7 +31,7 @@ GPIO.setup(Blue, GPIO.OUT)
 GPIO.setup(Green, GPIO.OUT)
 GPIO.setup(Buzzer, GPIO.OUT)
 
-dev = InputDevice('/dev/input/event0')
+dev = InputDevice('/dev/input/event1')
 print(dev)
 
 
@@ -56,14 +55,16 @@ def get_newline(line):
 
 def process_barcode_Token(bar_code):
     global ready
-    payload = {'UniqueCode': bar_code, 'VerificationPointId': '20', 'MachineCode': '171'}
+    payload = {'UniqueCode': bar_code, 'VerificationPointId': '32', 'MachineCode': '171'}
     logging.info(f'payload for product_post_url_Token = {payload}')
+
+    
     try:
         t = requests.post(product_post_url_Token, params=payload)
         print(t.text)
         result = json.loads(t.text)
         logging.info(f'response from product_post_url_Token = {result}')
-        data_dict = [t.json()];
+        data_dict = [t.json()]
         for item in data_dict:
             responce = str(item.get('status'))
             curDTObj = datetime.now()
@@ -74,11 +75,16 @@ def process_barcode_Token(bar_code):
                   p.set(align= u"" + x['align'],width=x['width'] ,height=x['height'],text_type=x['text_type'])
                   p.text(get_newline(x['newlinefront']) + x['Label'] + get_newline(x['newlineback']))
                  
-
+                response_barcode=item['data'].get('uniqueCode')
+                
                 p.text("------------------------\n")
-                p.qr(barcode_str,size=8)
+                #p.qr(barcode_str,size=8)
+                p.qr(response_barcode,size=8)
                 p.set(align=u"center",width=1 ,height=1)
-                p.text(barcode_str +"\n")
+                
+                #p.text(barcode_str +"\n")
+                p.text(response_barcode +"\n")
+                
                 p.set(align=u"center",width=2 ,height=2)
 
                 for x in result['data']['body']:
@@ -159,13 +165,12 @@ def process_barcode_Token(bar_code):
             #         print(r.url)
     except requests.exceptions.RequestException as e:
         print("Network error occurred")
-        logging.info(f'Network error occurred')
     print(t.text)
 
 def process_barcode_Verification(bar_code):
     global ready
-    payload = {'UniqueCode': bar_code, 'VerificationPointId': '20', 'MachineCode': '171'}
-    logging.info(f'payload to product_get_url_Verification {payload}')
+    payload = {'UniqueCode': bar_code, 'VerificationPointId': '32', 'MachineCode': '171'}
+    logging.info(f'payload for product_post_url_Token = {payload}')
     try:
         r = requests.get(product_get_url_Verification, params=payload)
         
@@ -173,6 +178,8 @@ def process_barcode_Verification(bar_code):
     except requests.exceptions.RequestException as e:
         print("Network error occurred")
         logging.info(f'Network error occurred')
+
+        
         for x in range (5):
             GPIO.setmode(GPIO.BCM)
             GPIO.setup(Red, GPIO.OUT)
@@ -188,8 +195,10 @@ def process_barcode_Verification(bar_code):
             
         ready = True
         return
-    data_dict = [r.json()];
+    data_dict = [r.json()]
     logging.info(f'response from product_get_url_Verification = {data_dict}')
+
+    
     print(r.text)
     
     for item in data_dict:
@@ -244,11 +253,10 @@ for event in dev.read_loop():
 
                 if ready:
                     if len(barcode_str) > 9:
-#                       print(barcode_str)
+#                         print(barcode_str)
                         logging.info(f'barcode = {barcode_str}')
                         process_barcode_Verification(barcode_str)
                         
 
             else:
                 barcode.append(key_lookup)
-                
