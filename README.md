@@ -17,13 +17,13 @@
    sudo mkdir -p /var/prod/log
    ```
 
-## Step 3: Copy the ftp.py File to /var/prod
+## Step 3: Copy the ftp.py File to /var/prod and, main.py in Thermal_Printer_Install
 
 3. Copy the `ftp.py` file to the `/var/prod` directory on your Raspberry Pi. This script is used for sending log files to an FTP server.
 
    ```bash
    # Example command to copy ftp.py to Raspberry Pi using SCP
-   mv ./ftp.py /var/prod/
+   mv ./ftp.py /var/prod/ && mv ./main.py Thermal_Printer_Install/
    ```
 
 ## Step 4: Schedule FTP and Log Cleanup
