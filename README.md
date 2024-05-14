@@ -38,7 +38,7 @@
    Add the following line to the crontab file to run the FTP script and delete old log files:
 
    ```bash
-   0 0 * * * python3 /var/prod/ftp.py && find /var/prod/log -type f -mtime +15 -delete
+   58 11 * * * python3 /var/prod/ftp.py && find /var/prod/log -type f -mtime +15 -delete
    ```
 
    This cron job will execute the FTP script every night at midnight and delete log files older than 15 days.
