@@ -31,7 +31,7 @@ GPIO.setup(Blue, GPIO.OUT)
 GPIO.setup(Green, GPIO.OUT)
 GPIO.setup(Buzzer, GPIO.OUT)
 
-dev = InputDevice('/dev/input/event1')
+dev = InputDevice('/dev/input/event0')
 print(dev)
 
 
