@@ -10,9 +10,9 @@ def upload_file_to_ftp(hostname, username, password, local_file_path, remote_fil
 
 # Example usage:
 hostname = '164.52.196.173'
-username = 'tapovan'
+username = 'ethicsdev'
 
-password = 'Tapovan@2024'
+password = 'Ethics@2024$$'
 local_file_path = f'/var/prod/log/{datetime.now().strftime("%Y-%m-%d")}_log.txt'
 remote_file_path = f'VPoint_2/Mcode_102/{datetime.now().strftime("%Y-%m-%d")}_log.txt'
 
