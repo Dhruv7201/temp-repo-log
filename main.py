@@ -10,7 +10,7 @@ import xmltodict
 import logging
 from datetime import datetime
 
-logging.basicConfig(filename=f'/var/prod/log/MCode_102VPoint_2{datetime.now().strftime("%Y-%m-%d")}_log.txt', level=logging.DEBUG, format='%(asctime)s - %(message)s')
+logging.basicConfig(filename=f'/var/prod/log/{datetime.now().strftime("%Y-%m-%d")}_log.txt', level=logging.DEBUG, format='%(asctime)s - %(message)s')
 from models import api_models
 GPIO.setwarnings(False)
 global ready
