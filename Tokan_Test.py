@@ -3,7 +3,7 @@ import time
 
 from datetime import datetime
 import logging
-logging.basicConfig(filename=f'/var/prod/log/Mcode_171VPoint_32{datetime.now().strftime("%Y-%m-%d")}_log.txt', level=logging.DEBUG, format='%(asctime)s - %(message)s')
+logging.basicConfig(filename=f'/var/prod/log/{datetime.now().strftime("%Y-%m-%d")}_log.txt', level=logging.DEBUG, format='%(asctime)s - %(message)s')
 
 import json
 import evdev
