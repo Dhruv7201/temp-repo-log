@@ -3,7 +3,7 @@ from datetime import datetime
 
 def upload_file_to_ftp(hostname, username, password, local_file_path, remote_file_path):
     ftp = FTP(hostname, username, password)
-
+    ftp.ftp.set_pasv(False)
     with open(local_file_path, 'rb') as file:
         ftp.storbinary(f'STOR {remote_file_path}', file)
     ftp.close()
